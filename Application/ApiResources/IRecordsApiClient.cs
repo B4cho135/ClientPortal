@@ -12,5 +12,6 @@ namespace Application.ApiResources
         public IRecordingsResource Recordings { get; set; }
         public IAuthenticationResource Users { get; set; }
         public IPhotosResource Photos { get; set; }
+        public IConfigurationResource Configuration { get; set; }
     }
 }

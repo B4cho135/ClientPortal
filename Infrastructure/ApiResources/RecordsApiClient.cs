@@ -37,6 +37,7 @@ namespace Infrastructure.ApiResources
             Recordings = RestService.For<IRecordingsResource>(_httpClient, refitSettings);
             Users = RestService.For<IAuthenticationResource>(_httpClient, refitSettings);
             Photos = RestService.For<IPhotosResource>(_httpClient, refitSettings);
+            Configuration = RestService.For<IConfigurationResource>(_httpClient, refitSettings);
 
             _httpContextAccesor = httpContextAccesor;
         }
@@ -45,5 +46,6 @@ namespace Infrastructure.ApiResources
         public IRecordingsResource Recordings { get; set; }
         public IAuthenticationResource Users { get; set; }
         public IPhotosResource Photos { get; set; }
+        public IConfigurationResource Configuration { get; set; }
     }
 }

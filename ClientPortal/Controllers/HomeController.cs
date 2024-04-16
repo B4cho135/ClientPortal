@@ -18,13 +18,20 @@ namespace ClientPortal.Controllers
             _apiClient = apiClient;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DashboardViewModel viewModel)
         {
-            var user = User;
+            if (viewModel == null)
+            {
+                viewModel = new DashboardViewModel();
+            }
 
             try
             {
-                var clients = await _apiClient.Clients.GetAll();
+                var config = await _apiClient.Configuration.GetConfiguration();
+
+                viewModel.CaptureFrequency = config.CaptureFrequency * 1000;
+                viewModel.RecordVideo = config.VideoCapture;
+                viewModel.RecordPhoto = config.CapturePhoto;
             }
             catch (ApiException ex)
             {
@@ -34,7 +41,7 @@ namespace ClientPortal.Controllers
                 }
             }
 
-            return View();
+            return View(viewModel);
         }
 
         [HttpPost]
