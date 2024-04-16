@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.ApiResources
 {
-    public interface IRecordingsApi
+    public interface IRecordingsResource
     {
         [Post("/api/Recordings")]
         Task UploadVideoRecording(UploadVideoRecordingRequest request);

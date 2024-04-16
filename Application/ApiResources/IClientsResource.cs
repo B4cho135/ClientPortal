@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Application.ApiResources
 {
     [Headers("accept: application/json")]
-    public interface IClientsApi
+    public interface IClientsResource
     {
         [Get("/api/clients")]
         Task<List<ClientEntity>> GetAll();
