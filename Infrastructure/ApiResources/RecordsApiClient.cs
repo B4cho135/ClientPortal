@@ -33,15 +33,17 @@ namespace Infrastructure.ApiResources
                 AuthorizationHeaderValueGetter = (req, canc) => Task.FromResult(token)
             };
 
-            Clients = RestService.For<IClientsApi>(_httpClient, refitSettings);
-            Recordings = RestService.For<IRecordingsApi>(_httpClient, refitSettings);
+            Clients = RestService.For<IClientsResource>(_httpClient, refitSettings);
+            Recordings = RestService.For<IRecordingsResource>(_httpClient, refitSettings);
             Users = RestService.For<IAuthenticationResource>(_httpClient, refitSettings);
+            Photos = RestService.For<IPhotosResource>(_httpClient, refitSettings);
 
             _httpContextAccesor = httpContextAccesor;
         }
 
-        public IClientsApi Clients { get; set; }
-        public IRecordingsApi Recordings { get; set; }
+        public IClientsResource Clients { get; set; }
+        public IRecordingsResource Recordings { get; set; }
         public IAuthenticationResource Users { get; set; }
+        public IPhotosResource Photos { get; set; }
     }
 }

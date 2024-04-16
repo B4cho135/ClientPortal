@@ -40,13 +40,16 @@ namespace ClientPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> RetrieveRecordedMedia(IFormFile file)
         {
+            var sessionId = User.Claims.FirstOrDefault(x => x.Type == "sessionGuid")?.Value;
+
             using (var ms = new MemoryStream())
             {
                 file.CopyTo(ms);
                 var fileBytes = ms.ToArray();
                 var requesModel = new UploadVideoRecordingRequest()
                 {
-                    FileBytes = fileBytes
+                    FileBytes = fileBytes,
+                    SessionId = sessionId
                 };
 
                 await _apiClient.Recordings.UploadVideoRecording(requesModel);
@@ -58,7 +61,24 @@ namespace ClientPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadPhoto(string base64Image)
         {
-            return View();
+            try
+            {
+                var sessionId = User.Claims.FirstOrDefault(x => x.Type == "sessionGuid")?.Value;
+
+                await _apiClient.Photos.UploadPhoto(new UploadPhotoRequest()
+                {
+                    Base64 = base64Image,
+                    SessionId = sessionId
+                });
+
+                return Json(sessionId);
+            }
+            catch (ApiException ex)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

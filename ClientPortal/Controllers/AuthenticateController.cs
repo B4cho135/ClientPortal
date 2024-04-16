@@ -38,20 +38,20 @@ namespace ClientPortal.Controllers
         {
             try
             {
-                //var user = await _apiClient.Users.Register(new RegisterUserRequest()
-                //{
-                //    Email = viewModel.Email,
-                //    IsAdmin = false,
-                //    Password = viewModel.Password,
-                //    Username = viewModel.UserName
-                //});
+                var user = await _apiClient.Users.Register(new RegisterUserRequest()
+                {
+                    Email = viewModel.Email,
+                    IsAdmin = false,
+                    Password = viewModel.Password,
+                    Username = viewModel.UserName
+                });
 
                 await _apiClient.Clients.Post(new CreateClientRequest()
                 {
                     Age = viewModel.Age,
                     FullName = viewModel.FullName,
                     PhoneNumber = viewModel.PhoneNumber,
-                    UserId = "1e124803-049b-468f-a6e9-34103b6c9d6c",
+                    UserId = user.Id,
                 });
 
                 return RedirectToAction("Login", "Authenticate");
@@ -101,7 +101,8 @@ namespace ClientPortal.Controllers
                     List<Claim> claims = new()
                     {
                         new Claim(ClaimTypes.NameIdentifier, viewModel.UserName),
-                        new Claim("access_token", token.Token)
+                        new Claim("access_token", token.Token),
+                        new Claim("sessionGuid", Guid.NewGuid().ToString())
                     };
 
                     ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);

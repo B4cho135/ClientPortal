@@ -8,8 +8,9 @@ namespace Application.ApiResources
 {
     public interface IRecordsApiClient
     {
-        public IClientsApi Clients { get; set; }
-        public IRecordingsApi Recordings { get; set; }
+        public IClientsResource Clients { get; set; }
+        public IRecordingsResource Recordings { get; set; }
         public IAuthenticationResource Users { get; set; }
+        public IPhotosResource Photos { get; set; }
     }
 }

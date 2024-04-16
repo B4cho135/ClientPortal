@@ -16,6 +16,8 @@
 <div class='movingObject'>
 </div>
 
+@Html.Hidden("RedirectTo", Url.Action("Logout", "Authenticate"));
+
 @section Scripts {
     <script>
         let mediaRecorder;
@@ -36,6 +38,9 @@
                     .forEach(track => track.stop());
 
                 chunks = [];
+
+                var url = $("#RedirectTo").val();
+                location.href = url;
             }
         });
 
