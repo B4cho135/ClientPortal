@@ -1,0 +1,84 @@
+﻿@model RegisterViewModel
+
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-lg-9 col-xl-7">
+                <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                    <div class="card-body p-4 p-md-5">
+                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
+                        <form asp-action="Register" asp-controller="Authenticate" method="post">
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="text" asp-for="UserName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="UserName">UserName</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="password" id="password" asp-for="Password" class="form-control form-control-lg" />
+                                        <label class="form-label" for="password">Password</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="text" id="fullName" asp-for="FullName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="fullName">Full Name</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="number" id="Age" asp-for="Age" class="form-control form-control-lg" />
+                                        <label class="form-label" for="Age">Age</label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="tel" id="phoneNumber" asp-for="PhoneNumber" class="form-control form-control-lg" />
+                                        <label class="form-label" for="phoneNumber">Phone Number</label>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div data-mdb-input-init class="form-outline">
+                                        <input type="email" id="email" asp-for="Email" class="form-control form-control-lg" />
+                                        <label class="form-label" for="email">Email</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="mt-4 pt-2">
+                                <input data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg" type="submit" value="Create Account" />
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

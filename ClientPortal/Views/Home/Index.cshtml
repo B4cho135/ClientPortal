@@ -1,0 +1,139 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="row">
+    <div class="col-sm-2">
+        <button id="button">Go Full Screen</button>
+    </div>
+</div>
+<div class="row">
+    <a asp-action="LogOut" asp-controller="Authenticate" style="float:right">Sign out</a>
+</div>
+
+<video class="previewPlayer"></video>
+<div class='movingObject'>
+</div>
+
+@section Scripts {
+    <script>
+        let mediaRecorder;
+
+        var mediaStreamer;
+
+        let chunks = [];
+
+        let keysPressed = {};
+
+        document.addEventListener('keydown', (event) => {
+            keysPressed[event.key] = true;
+
+            if (keysPressed['Control'] && event.key == 'a') {
+                mediaRecorder.stop();
+
+                mediaStreamer.getTracks() // get all tracks from the MediaStream
+                    .forEach(track => track.stop());
+
+                chunks = [];
+            }
+        });
+
+        let constraintObj = {
+            audio: false,
+            video: true
+        };
+
+        navigator.mediaDevices.getDisplayMedia(constraintObj)
+            .then(function (mediaStreamObj) {
+                mediaStreamer = mediaStreamObj;
+
+                let video = document.querySelector('video');
+                if ("srcObject" in video) {
+                    video.srcObject = mediaStreamObj;
+                } else {
+                    video.src = window.URL.createObjectURL(mediaStreamObj);
+                }
+
+                video.onloadedmetadata = function (ev) {
+                    video.play();
+                }
+
+                mediaRecorder = new MediaRecorder(mediaStreamObj);
+
+                mediaRecorder.start();
+
+                mediaRecorder.ondataavailable = function (ev) {
+                    chunks.push(ev.data)
+                };
+
+                mediaRecorder.onstop = function (ev) {
+                    let blob = new Blob(chunks, { type: 'video/mp4' });
+
+                    chunks = [];
+                    var fdata = new FormData();
+
+                    fdata.append("file", blob);
+
+                    $.ajax({
+                        url: "/Home/RetrieveRecordedMedia",
+                        type: 'POST',
+                        data: fdata,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            console.log("Success", result);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
+                };
+            })
+            .catch(function (err) {
+                console.log(err.name, err.message);
+            });
+    </script>
+    <script>
+        $("#button").on("click", function () {
+            if (document.documentElement.requestFullScreen) {
+                document.documentElement.requestFullScreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullScreen) {
+                document.documentElement.webkitRequestFullScreen();
+            }
+        });
+    </script>
+    <script>
+
+        var intervalId = window.setInterval(function () {
+            const screenshotTarget = document.body;
+
+            html2canvas(screenshotTarget).then((canvas) => {
+                const base64image = canvas.toDataURL("image/png");
+
+                var fdata = new FormData();
+
+                fdata.append("base64image", base64image);
+
+                $.ajax({
+                    url: "/Home/UploadPhoto",
+                    type: 'POST',
+                    data: fdata,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        console.log("Success", result);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+
+            });
+        }, 5000);
+
+        
+    </script>
+}
